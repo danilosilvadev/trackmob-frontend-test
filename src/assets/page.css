@@ -1,0 +1,68 @@
+/*Principal css do projeto com alinhamento flexbox */
+
+html {
+    font-size: medium;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    margin: 0 auto;
+    text-align: center; /* this make the site be centralized */
+    max-width: 1400px; /* this will make the site be centralized in big screens like smart tvs */
+    background-color: #013247;
+}
+
+.content {
+    width: 100%;
+    display: block;
+    background-image: url("banner_background.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    height: 4rem;
+    align-items: center;
+}
+
+.compartilhe > a {
+    margin-left: .5rem;
+}
+
+.main {
+    height: 90vh;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.banner_textos {
+    text-align: left;
+    margin-top: 7rem;
+}
+
+.formulario {
+    background-color: white;
+    margin-top: 13vw;
+    padding: 1.5rem;
+}
+
+.label_valor {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid LightGrey;
+}
+
+.dados_pessoais {
+    margin-top: 1rem;
+    display: flex;
+}
+
+.border {
+    border-bottom: 1px solid LightGrey;
+}
