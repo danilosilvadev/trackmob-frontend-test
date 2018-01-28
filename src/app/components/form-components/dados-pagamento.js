@@ -21,7 +21,7 @@ const DadosPagamento = () => {
         <Validity>
             <span className='titulo_dado'>Validade do cartão:<span className='asteristico'>*</span></span>
             <label>
-                <InputDate type="text" placeholder='00/00/00' />
+                <InputDate type="date" placeholder='00/00/00' />
             </label>
         </Validity>
     </section>

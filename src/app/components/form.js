@@ -4,52 +4,74 @@ import DadosPessoais from './form-components/dados-pessoais'
 import DadosPagamento from './form-components/dados-pagamento'
 import SelecioneValor from './form-components/selecione-valor'
 
-export class Form extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
+    this.handleValue = this.handleValue.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleOption = this.handleOption.bind(this);
   }
   state = {
-    value: ''
+    value: '0',
+    periodicity: '',
+    //border colors para validação
+    valueColor: 'grey',
+    nameColor: 'grey',
+    lastNameColor: 'grey',
+    emailColor: 'grey',
+    CPFColor: 'grey',
+    cartaoColor: 'grey',
+    validadeColor: 'grey'
   }
 
   handleChange() {
 
   }
 
-  handleSubmit() {
+  handleClick(e) {
+    e.preventDefault();
+    const color = this.state.valueColor;
+    if (this.state.value === '0' || this.state.value < 15 || this.state.value === '') {
+      this.setState({valueColor: 'red'});
+    } else {
+      this.setState({valueColor: 'grey'});
+    }
 
+    console.log(color);
   }
 
-  handleTests() {
+  handleOption(p) {
+    this.setState({ periodicity: p});
+  }
 
+  handleValue(v) {
+    this.setState({ value: v});
   }
 
   render() {
-    return (
-      //colocar as sections em components diferentes e validar eles nos seus devidos componentos
-      //depois disso enviar para form.js via props e assim para a API
-      <form onSubmit={this.handleSubmit} className='formulario'>
-        
-        <Title>Selecione um valor</Title>
-        <SelecioneValor />
 
-        <br />
-        <Title>Dados Pessoais</Title>
-        <DadosPessoais />
-        <br />
+    return <form onSubmit={this.handleClick} className='formulario'>
 
-        <Div><Title>Dados de pagamento</Title><Span>&#128274; Dados seguros</Span></Div>
-        <DadosPagamento />
-        <br />
-
-        <Valor> R$ 35,00 </Valor>
-        <input type="submit" value="Confirmar doação" /><br /><br />
-        <Checkbox>
-        <input type="checkbox" /> 
+      {/*area 1 */}
+      <Title>Selecione um valor</Title>
+      <SelecioneValor onValue={this.handleValue} onOption={this.handleOption} />
+      {/*area 2 */}
+      <br />
+      <Title>Dados Pessoais</Title>
+      <DadosPessoais />
+      <br />
+      {/*area 3 */}
+      <Div><Title>Dados de pagamento</Title><Span>&#128274; Dados seguros</Span></Div>
+      <DadosPagamento />
+      <br />
+      {/*area 4 */}
+      <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
+      <input type="submit" value="Confirmar doação" /><br /><br />
+      <Checkbox>
+        <input type="checkbox" />
         <CheckText>Aceito ser contatado para receber informações sobre a ong.</CheckText>
-        </Checkbox>
-      </form>
-    )
+      </Checkbox>
+    </form>
   }
 }
 
@@ -79,6 +101,5 @@ const CheckText = styled.span`
   font-size: .6rem;
   color: DimGrey;
 `
-
 
 export default Form

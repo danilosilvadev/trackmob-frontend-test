@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 
-
 const DadosPessoais = () => {
     return <Dados className='border'>
         <Nome>
@@ -22,7 +21,7 @@ const DadosPessoais = () => {
                 <span className='titulo_dado'>Email:<span className='asteristico'>*</span></span>
             </FieldTitle>
             <LEmail>
-                <InputEmail type="text" placeholder='Email' />
+                <InputEmail type="email" placeholder='Email' />
             </LEmail>
         </Email>
     </Dados>

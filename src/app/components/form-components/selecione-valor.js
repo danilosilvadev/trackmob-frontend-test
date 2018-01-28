@@ -1,24 +1,51 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-const SelecioneValor = () => {
-    return <section className='label_valor'>
-    <LabelPeriodicidade>
-      <select>
-        <option value="unica">Única</option>
-        <option value="mensal">Mensal</option>
-        <option value="semestral">Semestral</option>
-        <option value="anual">Anual</option>
-      </select>
-    </LabelPeriodicidade>
-    <LabelValor>
-      <InputValor type="text" placeholder='R$ 30,00' /><br />
-      <span>Valor mínimo de R$ 15,00</span>
-    </LabelValor>
-  </section>
+class SelecioneValor extends Component {
+    constructor(props) {
+        super(props);
+        this.handleChangeValue = this.handleChangeValue.bind(this);
+        this.handleChangeOption = this.handleChangeOption.bind(this);
+    }
+    state = {
+        valueMoney: '',
+        periodicity: ''
+    }
+
+    handleChangeValue(e){
+        e.preventDefault();
+        const value = e.target.value;
+        this.setState({valueMoney: value});
+        this.props.onValue(value);
+    }
+
+    handleChangeOption(e){
+        e.preventDefault();
+        const option = e.target.value;
+        this.setState({periodicity: option});
+        this.props.onOption(option);
+
+
+    }
+
+    render() {
+        return <section className='label_valor'>
+            <LabelPeriodicidade>
+                <select onChange={this.handleChangeOption}>
+                    <option value="">Selecione</option>
+                    <option value="única">Única</option>
+                    <option value="mensais">Mensal</option>
+                    <option value="semestrais">Semestral</option>
+                    <option value="anuais">Anual</option>
+                </select>
+            </LabelPeriodicidade>
+            <LabelValor>
+                <InputValor type="number" placeholder='R$ 30,00' onChange={this.handleChangeValue} /><br />
+                <span>Valor mínimo de R$ 15,00</span>
+            </LabelValor>
+        </section>
+    }
 }
-
-
 const LabelPeriodicidade = styled.label`
   width 7rem;
 `
