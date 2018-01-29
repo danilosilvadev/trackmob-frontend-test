@@ -10,6 +10,9 @@ class Form extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   state = {
+    errorMessage: 'none',
+    
+    //fields
     value: '0',
     periodicity: '',
     name: '',
@@ -33,49 +36,61 @@ class Form extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    const { value } = this.state;
-    const { name } = this.state;
-    const { lastName } = this.state;
-    const { email } = this.state;
-    const { cpf } = this.state;
-    const { card } = this.state;
-    const { cvv } = this.state;
-    const { date } = this.state;
+    const state = this.state;
+    const { value } = state;
+    const { name } = state;
+    const { lastName } = state;
+    const { email } = state;
+    const { cpf } = state;
+    const { card } = state;
+    const { cvv } = state;
+    const { date } = state;
+
+    //regex para verificar validações
     const regexEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const regexNumber = /^[0-9]*$/;
+
+    //validações
     if (value === '0' || value < 15 || value === '' ) {
-      this.setState({ valueColor: 'red' });
+      this.setState({ valueColor: '#ff5151', errorMessage: 'block'});
     } else {
       this.setState({ valueColor: 'grey' });
     } if (name === '') {
-      this.setState({ nameColor: 'red' });
+      this.setState({ nameColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ nameColor: 'grey' });
     } if (lastName === '') {
-      this.setState({ lastNameColor: 'red' });
+      this.setState({ lastNameColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ lastNameColor: 'grey' });
     } if (email === '' || !regexEmail.test(email)) {
-      this.setState({ emailColor: 'red' });
+      this.setState({ emailColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ emailColor: 'grey' });
     } if (cpf === '' || !regexNumber.test(cpf) || cpf.length < 11) {
-      this.setState({ cpfColor: 'red' });
+      this.setState({ cpfColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ cpfColor: 'grey' });
     } if (card === '' || !regexNumber.test(card) || card.length < 16) {
-      this.setState({ cardColor: 'red' });
+      this.setState({ cardColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ cardColor: 'grey' });
     }  if (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) {
-      this.setState({ cvvColor: 'red' });
+      this.setState({ cvvColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ cvvColor: 'grey' });
     } if (date === '') {
-      this.setState({ dateColor: 'red' });
+      this.setState({ dateColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ dateColor: 'grey' });
-    }
+    } 
+    
+    //validação final
+    if((state.valueColor && state.nameColor && state.lastNameColor && state.emailColor &&
+          state.cardColor && state.cvvColor && state.cpfColor && state.dateColor) === 'grey'){
+            this.setState({ errorMessage: 'none' });
+            //pôr axious aqui
+          }
 
   }
 
@@ -86,6 +101,9 @@ class Form extends Component {
       {/*section 1 */}
       <Title>Selecione um valor</Title>
       <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })} onError={this.state.valueColor} />
+
+      {/*Error message */}
+      <ErrorMessage style={{ display: this.state.errorMessage}}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
 
       {/*section 2 */}
       <br />
@@ -115,6 +133,14 @@ class Form extends Component {
   }
 }
 
+const ErrorMessage = styled.div`
+  background-color: #ff5151;
+  font-size: 1rem;
+  color: white;
+  margin-top: 1rem;
+  padding: .5rem;
+  border-radius: 2px;
+`
 
 const Title = styled.header`
   font-size: 1rem;
