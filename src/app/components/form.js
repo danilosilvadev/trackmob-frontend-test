@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import DadosPessoais from './form-components/dados-pessoais'
 import DadosPagamento from './form-components/dados-pagamento'
 import SelecioneValor from './form-components/selecione-valor'
+import { setTimeout } from 'timers';
+import axios from 'axios';
+
 
 class Form extends Component {
   constructor(props) {
@@ -11,7 +14,7 @@ class Form extends Component {
   }
   state = {
     errorMessage: 'none',
-    
+
     //fields
     value: '0',
     periodicity: '',
@@ -22,6 +25,7 @@ class Form extends Component {
     cvv: '',
     date: '',
     cpf: '',
+    accept_contact: 'false',
 
     //border colors para validação
     valueColor: 'grey',
@@ -37,68 +41,104 @@ class Form extends Component {
 
   handleClick(e) {
     e.preventDefault();
-    const state = this.state;
-    const { value } = state;
-    const { name } = state;
-    const { lastName } = state;
-    const { email } = state;
-    const { cpf } = state;
-    const { card } = state;
-    const { cvv } = state;
-    const { date } = state;
-    const { periodicity }= state;
+    
+    const { 
+      value,
+      name,
+      lastName,
+      email,
+      cpf,
+      card,
+      cvv,
+      date,
+      periodicity } = this.state;
 
-    //regex para verificar validações
+      const {
+        valueColor,
+        nameColor,
+        lastNameColor,
+        emailColor,
+        cpfColor,
+        cardColor,
+        cvvColor,
+        dateColor,
+        periodicityColor
+      } = this.state;
+
+    //regex para validações
     const regexEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const regexNumber = /^[0-9]*$/;
 
     //validações
-    if (value === '0' || value < 15 || value === '' ) {
-      this.setState({ valueColor: '#ff5151', errorMessage: 'block'});
+    if (value === '0' || value < 15 || value === '') {
+      this.setState({ valueColor: '#ff5151' });
     } else {
       this.setState({ valueColor: 'grey' });
     } if (name === '') {
-      this.setState({ nameColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ nameColor: '#ff5151' });
     } else {
       this.setState({ nameColor: 'grey' });
     } if (lastName === '') {
-      this.setState({ lastNameColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ lastNameColor: '#ff5151' });
     } else {
       this.setState({ lastNameColor: 'grey' });
     } if (email === '' || !regexEmail.test(email)) {
-      this.setState({ emailColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ emailColor: '#ff5151' });
     } else {
       this.setState({ emailColor: 'grey' });
     } if (cpf === '' || !regexNumber.test(cpf) || cpf.length < 11) {
-      this.setState({ cpfColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ cpfColor: '#ff5151' });
     } else {
       this.setState({ cpfColor: 'grey' });
     } if (card === '' || !regexNumber.test(card) || card.length < 16) {
-      this.setState({ cardColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ cardColor: '#ff5151' });
     } else {
       this.setState({ cardColor: 'grey' });
-    }  if (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) {
-      this.setState({ cvvColor: '#ff5151', errorMessage: 'block' });
+    } if (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) {
+      this.setState({ cvvColor: '#ff5151' });
     } else {
       this.setState({ cvvColor: 'grey' });
     } if (date === '') {
-      this.setState({ dateColor: '#ff5151', errorMessage: 'block' });
+      this.setState({ dateColor: '#ff5151' });
     } else {
       this.setState({ dateColor: 'grey' });
-    }  if (periodicity === '') {
-      this.setState({ periodicityColor: '#ff5151', errorMessage: 'block' });
+    } if (periodicity === '') {
+      this.setState({ periodicityColor: '#ff5151' });
     } else {
       this.setState({ periodicityColor: 'grey' });
-    } 
-    
-    //validação final
-    return (this.state.valueColor && this.state.nameColor && this.state.lastNameColor && this.state.emailColor &&
-          this.state.cardColor && this.state.cvvColor && this.state.cpfColor 
-          && this.state.dateColor && this.state.periodicityColor) === 'grey'? console.log('inside') :
-           console.log('not inside');
-            //pôr axious aqui
-            //this.setState({ errorMessage: 'none' })
+    }
 
+    //validação final
+    setTimeout(() => {
+      return (valueColor && nameColor && lastNameColor && emailColor && cardColor && cvvColor && cpfColor
+        && dateColor && periodicityColor) === 'grey' ? () => { console.log('entrando'); this.setState({ errorMessage: 'none' }); handleSubmit(); } :
+        this.setState({ errorMessage: 'block' });
+    }, 1);
+  }
+
+  handleSubmit() {
+    axios({
+      method: 'post',
+      url: 'https://trackmob-frontend-test.firebaseio.com/RdMa77REkLXsh9ec0WcWNbff1dw2/danilosilvadev/donors.json',
+      data: {
+        frequency: this.state.periodicity,
+        value: this.state.value,
+        first_name: this.state.name,
+        last_name: this.state.lastName,
+        complete_name: (this.state.name + this.state.lastName),
+        email: this.state.email,
+        document: this.state.cpf,
+        card_number: this.state.card,
+        cvv: this.state.cvv,
+        validity: this.state.validity,
+        accept_contact: this.state.accept_contact
+      }
+    }).then((res) => {
+      console.log('deu certo');
+    }).catch((err) => {
+      console.log(err);
+
+    });
   }
 
   render() {
@@ -107,11 +147,11 @@ class Form extends Component {
 
       {/*section 1 */}
       <Title>Selecione um valor</Title>
-      <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })} 
-      onErrorValue={this.state.valueColor} onErrorOption={this.state.periodicityColor}/>
+      <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })}
+        onErrorValue={this.state.valueColor} onErrorOption={this.state.periodicityColor} />
 
       {/*Error message */}
-      <ErrorMessage style={{ display: this.state.errorMessage}}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
+      <ErrorMessage style={{ display: this.state.errorMessage }}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
 
       {/*section 2 */}
       <br />
@@ -123,18 +163,18 @@ class Form extends Component {
 
       {/*section 3 */}
       <Div><Title>Dados de pagamento</Title><Span>&#128274; Dados seguros</Span></Div>
-      <DadosPagamento onCPF={v => this.setState({ cpf: v})} 
-      onErrorCPF={this.state.cpfColor} onCard={v => this.setState({ card: v})} 
-      onErrorCard={this.state.cardColor} onCVV={v => this.setState({ cvv: v})} 
-      onErrorCVV={this.state.cvvColor} onDate={v => this.setState({ date: v})} 
-      onErrorDate={this.state.dateColor}/>
+      <DadosPagamento onCPF={v => this.setState({ cpf: v })}
+        onErrorCPF={this.state.cpfColor} onCard={v => this.setState({ card: v })}
+        onErrorCard={this.state.cardColor} onCVV={v => this.setState({ cvv: v })}
+        onErrorCVV={this.state.cvvColor} onDate={v => this.setState({ date: v })}
+        onErrorDate={this.state.dateColor} />
       <br />
 
       {/*section 4 */}
       <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
       <Confirmar type="submit">Confirmar doação</Confirmar><br /><br />
       <Checkbox>
-        <input type="checkbox" />
+        <input type="checkbox" onClick={v => this.setState({accept_contact: 'true'})} />
         <CheckText>Aceito ser contatado para receber informações sobre a ong.</CheckText>
       </Checkbox>
     </form>
