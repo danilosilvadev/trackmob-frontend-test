@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import DadosPessoais from './form-components/dados-pessoais'
 import DadosPagamento from './form-components/dados-pagamento'
 import SelecioneValor from './form-components/selecione-valor'
-import { setTimeout } from 'timers';
 import axios from 'axios';
-
 
 class Form extends Component {
   constructor(props) {
@@ -13,7 +11,6 @@ class Form extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   state = {
-    errorMessage: 'none',
 
     //fields
     value: '0',
@@ -39,10 +36,14 @@ class Form extends Component {
     periodicityColor: 'grey'
   }
 
+  errorMessage = {
+    message: 'none'
+  }
+
   handleClick(e) {
     e.preventDefault();
-    
-    const { 
+
+    const {
       value,
       name,
       lastName,
@@ -53,16 +54,16 @@ class Form extends Component {
       date,
       periodicity } = this.state;
 
-      const {
-        valueColor,
-        nameColor,
-        lastNameColor,
-        emailColor,
-        cpfColor,
-        cardColor,
-        cvvColor,
-        dateColor,
-        periodicityColor
+    const {
+      valueColor,
+      nameColor,
+      lastNameColor,
+      emailColor,
+      cpfColor,
+      cardColor,
+      cvvColor,
+      dateColor,
+      periodicityColor
       } = this.state;
 
     //regex para validações
@@ -70,7 +71,7 @@ class Form extends Component {
     const regexNumber = /^[0-9]*$/;
 
     //validações
-    if (value === '0' || value < 15 || value === '') {
+    if (value === '0' || Number(value) < 15 || value === '' || !regexNumber.test(value)) {
       this.setState({ valueColor: '#ff5151' });
     } else {
       this.setState({ valueColor: 'grey' });
@@ -108,12 +109,13 @@ class Form extends Component {
       this.setState({ periodicityColor: 'grey' });
     }
 
-    //validação final
-    setTimeout(() => {
-      return (valueColor && nameColor && lastNameColor && emailColor && cardColor && cvvColor && cpfColor
-        && dateColor && periodicityColor) === 'grey' ? () => { console.log('entrando'); this.setState({ errorMessage: 'none' }); handleSubmit(); } :
-        this.setState({ errorMessage: 'block' });
-    }, 1);
+    if ((valueColor && nameColor && lastNameColor && emailColor
+      && cardColor && cvvColor && cpfColor
+      && dateColor && periodicityColor) === 'grey') {
+      console.log('dentro'); this.errorMessage.message = 'none'; //this.handleSubmit();
+    } else {
+      console.log('fora'); this.errorMessage.message = 'block';
+    }
   }
 
   handleSubmit() {
@@ -151,7 +153,7 @@ class Form extends Component {
         onErrorValue={this.state.valueColor} onErrorOption={this.state.periodicityColor} />
 
       {/*Error message */}
-      <ErrorMessage style={{ display: this.state.errorMessage }}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
+      <ErrorMessage style={{ display: this.errorMessage.message }}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
 
       {/*section 2 */}
       <br />
@@ -171,10 +173,12 @@ class Form extends Component {
       <br />
 
       {/*section 4 */}
-      <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
-      <Confirmar type="submit">Confirmar doação</Confirmar><br /><br />
+      <Confirmar>
+        <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
+        <ConfirmarButton type="submit">Confirmar doação</ConfirmarButton><br /><br />
+      </Confirmar>
       <Checkbox>
-        <input type="checkbox" onClick={v => this.setState({accept_contact: 'true'})} />
+        <input type="checkbox" onClick={v => this.setState({ accept_contact: 'true' })} />
         <CheckText>Aceito ser contatado para receber informações sobre a ong.</CheckText>
       </Checkbox>
     </form>
@@ -193,6 +197,7 @@ const ErrorMessage = styled.div`
 const Title = styled.header`
   font-size: 1rem;
   font-weight: bold;
+  text-align: left;
 `
 const Div = styled.div`
   display: flex;
@@ -205,11 +210,15 @@ const Span = styled.span`
   padding: .2rem;
 `
 const Checkbox = styled.label`
-  margin-left: 8rem;
+  display: flex;
+  margin-left: 7.9rem;
 `
 const Valor = styled.span`
   font-size: .8rem;
   font-weight: bold;
+  display: flex;
+  justify-content: flex-start;
+  width: 8rem;
 `
 
 const CheckText = styled.span`
@@ -217,8 +226,7 @@ const CheckText = styled.span`
   color: DimGrey;
 `
 
-const Confirmar = styled.button`
-  margin-left: 1rem;
+const ConfirmarButton = styled.button`
   background-color: #ff9900;
   color: white;
   padding: .5rem;
@@ -226,6 +234,10 @@ const Confirmar = styled.button`
   font-size: .9rem;
   font-weight: bold;
   border: none;
+`
+const Confirmar = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 export default Form

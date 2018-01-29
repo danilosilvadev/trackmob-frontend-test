@@ -14,7 +14,7 @@ const SelecioneValor = props => {
                 </select>
             </LabelPeriodicidade>
             <LabelValor>
-                <InputValor type="number" placeholder='R$ 30,00' 
+                <InputValor type="text" placeholder='R$ 30,00' maxLength="8"
                 onChange={v => props.onValue(v.target.value)} style={{border: `1px solid ${props.onErrorValue}`}}/><br />
                 <span>Valor mínimo de R$ 15,00</span>
             </LabelValor>
@@ -35,5 +35,6 @@ const LabelValor = styled.div`
   color: grey;
   margin-left: 1rem;
   flex-grow: 2;
+  text-align: left;
 `
 export default SelecioneValor

@@ -77,7 +77,7 @@ const Email = styled.div`
 `
 const LEmail = styled.label`
     flex-grow: 2;
-    margin-left: 3.6rem;
+    margin-left: 3.9rem;
 `
 const InputEmail = styled.input`
     width: 100%;
