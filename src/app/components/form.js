@@ -31,7 +31,8 @@ class Form extends Component {
     cpfColor: 'grey',
     cardColor: 'grey',
     cvvColor: 'grey',
-    dateColor: 'grey'
+    dateColor: 'grey',
+    periodicityColor: 'grey'
   }
 
   handleClick(e) {
@@ -45,6 +46,7 @@ class Form extends Component {
     const { card } = state;
     const { cvv } = state;
     const { date } = state;
+    const { periodicity }= state;
 
     //regex para verificar validações
     const regexEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -83,14 +85,19 @@ class Form extends Component {
       this.setState({ dateColor: '#ff5151', errorMessage: 'block' });
     } else {
       this.setState({ dateColor: 'grey' });
+    }  if (periodicity === '') {
+      this.setState({ periodicityColor: '#ff5151', errorMessage: 'block' });
+    } else {
+      this.setState({ periodicityColor: 'grey' });
     } 
     
     //validação final
-    if((state.valueColor && state.nameColor && state.lastNameColor && state.emailColor &&
-          state.cardColor && state.cvvColor && state.cpfColor && state.dateColor) === 'grey'){
-            this.setState({ errorMessage: 'none' });
+    return (this.state.valueColor && this.state.nameColor && this.state.lastNameColor && this.state.emailColor &&
+          this.state.cardColor && this.state.cvvColor && this.state.cpfColor 
+          && this.state.dateColor && this.state.periodicityColor) === 'grey'? console.log('inside') :
+           console.log('not inside');
             //pôr axious aqui
-          }
+            //this.setState({ errorMessage: 'none' })
 
   }
 
@@ -100,7 +107,8 @@ class Form extends Component {
 
       {/*section 1 */}
       <Title>Selecione um valor</Title>
-      <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })} onError={this.state.valueColor} />
+      <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })} 
+      onErrorValue={this.state.valueColor} onErrorOption={this.state.periodicityColor}/>
 
       {/*Error message */}
       <ErrorMessage style={{ display: this.state.errorMessage}}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
@@ -124,7 +132,7 @@ class Form extends Component {
 
       {/*section 4 */}
       <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
-      <input type="submit" value="Confirmar doação" /><br /><br />
+      <Confirmar type="submit">Confirmar doação</Confirmar><br /><br />
       <Checkbox>
         <input type="checkbox" />
         <CheckText>Aceito ser contatado para receber informações sobre a ong.</CheckText>
@@ -160,12 +168,24 @@ const Checkbox = styled.label`
   margin-left: 8rem;
 `
 const Valor = styled.span`
-  margin-right: 4rem;
+  font-size: .8rem;
+  font-weight: bold;
 `
 
 const CheckText = styled.span`
   font-size: .6rem;
   color: DimGrey;
+`
+
+const Confirmar = styled.button`
+  margin-left: 1rem;
+  background-color: #ff9900;
+  color: white;
+  padding: .5rem;
+  border-radius: 2px;
+  font-size: .9rem;
+  font-weight: bold;
+  border: none;
 `
 
 export default Form

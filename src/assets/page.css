@@ -34,7 +34,6 @@ body {
 }
 
 .main {
-    height: 90vh;
     margin-left: 25%;
     margin-right: 25%;
 }
@@ -47,7 +46,9 @@ body {
 .formulario {
     background-color: white;
     margin-top: 13vw;
+    margin-bottom: 5vw;
     padding: 1.5rem;
+    border-radius: 2px;
 }
 
 .label_valor {

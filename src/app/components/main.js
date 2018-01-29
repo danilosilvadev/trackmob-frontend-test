@@ -24,8 +24,8 @@ const Main = () => {
                 magnis dis parturient montes, nascetur ridiculus
                 mus.
                 </Article>
-            <Form />
         </section>
+        <Form />
     </main>;
 }
 

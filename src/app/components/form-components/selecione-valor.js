@@ -5,7 +5,7 @@ const SelecioneValor = props => {
 
         return <section className='label_valor'>
             <LabelPeriodicidade>
-                <select onChange={ v => props.onOption(v.target.value)}>
+                <select onChange={ v => props.onOption(v.target.value)} style={{border: `1px solid ${props.onErrorOption}`}}>
                     <option value="">Selecione</option>
                     <option value="única">Única</option>
                     <option value="mensais">Mensal</option>
@@ -15,7 +15,7 @@ const SelecioneValor = props => {
             </LabelPeriodicidade>
             <LabelValor>
                 <InputValor type="number" placeholder='R$ 30,00' 
-                onChange={v => props.onValue(v.target.value)} style={{border: `1px solid ${props.onError}`}}/><br />
+                onChange={v => props.onValue(v.target.value)} style={{border: `1px solid ${props.onErrorValue}`}}/><br />
                 <span>Valor mínimo de R$ 15,00</span>
             </LabelValor>
         </section>
