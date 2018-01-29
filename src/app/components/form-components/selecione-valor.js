@@ -1,37 +1,23 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-class SelecioneValor extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChangeValue = this.handleChangeValue.bind(this);
-        this.handleChangeOption = this.handleChangeOption.bind(this);
-    }
-    state = {
-        valueMoney: '',
-        periodicity: ''
-    }
+const SelecioneValor = props => {
 
-    handleChangeValue(e){
+    const handleChangeValue = (e) => {
         e.preventDefault();
         const value = e.target.value;
-        this.setState({valueMoney: value});
-        this.props.onValue(value);
+        props.onValue(value);
     }
 
-    handleChangeOption(e){
+    const handleChangeOption = (e) => {
         e.preventDefault();
         const option = e.target.value;
-        this.setState({periodicity: option});
-        this.props.onOption(option);
-
-
+        props.onOption(option);
     }
 
-    render() {
         return <section className='label_valor'>
             <LabelPeriodicidade>
-                <select onChange={this.handleChangeOption}>
+                <select onChange={handleChangeOption}>
                     <option value="">Selecione</option>
                     <option value="única">Única</option>
                     <option value="mensais">Mensal</option>
@@ -40,11 +26,11 @@ class SelecioneValor extends Component {
                 </select>
             </LabelPeriodicidade>
             <LabelValor>
-                <InputValor type="number" placeholder='R$ 30,00' onChange={this.handleChangeValue} /><br />
+                <InputValor type="number" placeholder='R$ 30,00' 
+                onChange={handleChangeValue} style={{border: `1px solid ${props.onError}`}}/><br />
                 <span>Valor mínimo de R$ 15,00</span>
             </LabelValor>
         </section>
-    }
 }
 const LabelPeriodicidade = styled.label`
   width 7rem;
