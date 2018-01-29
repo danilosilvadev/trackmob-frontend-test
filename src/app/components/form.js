@@ -11,6 +11,7 @@ class Form extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
   state = {
+    message: 'none',
 
     //fields
     value: '0',
@@ -36,11 +37,7 @@ class Form extends Component {
     periodicityColor: 'grey'
   }
 
-  errorMessage = {
-    message: 'none'
-  }
-
-  handleClick(e) {
+  async handleClick(e) {
     e.preventDefault();
 
     const {
@@ -71,66 +68,36 @@ class Form extends Component {
     const regexNumber = /^[0-9]*$/;
 
     //validações
-    if (value === '0' || Number(value) < 15 || value === '') {
-      this.setState({ valueColor: '#ff5151' });
-    } else {
-      this.setState({ valueColor: 'grey' });
-    } if (name === '') {
-      this.setState({ nameColor: '#ff5151' });
-    } else {
-      this.setState({ nameColor: 'grey' });
-    } if (lastName === '') {
-      this.setState({ lastNameColor: '#ff5151' });
-    } else {
-      this.setState({ lastNameColor: 'grey' });
-    } if (email === '' || !regexEmail.test(email)) {
-      this.setState({ emailColor: '#ff5151' });
-    } else {
-      this.setState({ emailColor: 'grey' });
-    } if (cpf === '' || !regexNumber.test(cpf) || cpf.length < 11) {
-      this.setState({ cpfColor: '#ff5151' });
-    } else {
-      this.setState({ cpfColor: 'grey' });
-    } if (card === '' || !regexNumber.test(card) || card.length < 16) {
-      this.setState({ cardColor: '#ff5151' });
-    } else {
-      this.setState({ cardColor: 'grey' });
-    } if (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) {
-      this.setState({ cvvColor: '#ff5151' });
-    } else {
-      this.setState({ cvvColor: 'grey' });
-    } if (date === '') {
-      this.setState({ dateColor: '#ff5151' });
-    } else {
-      this.setState({ dateColor: 'grey' });
-    } if (periodicity === '') {
-      this.setState({ periodicityColor: '#ff5151' });
-    } else {
-      this.setState({ periodicityColor: 'grey' });
-    }
+    await this.setState({
+      valueColor: (value === '0' || Number(value) < 15 || value === '') ? '#ff5151' : 'grey',
+      nameColor: (name === '') ? '#ff5151' : 'grey',
+      lastNameColor: lastName === '' ? '#ff5151' : 'grey',
+      emailColor: (email === '' || !regexEmail.test(email)) ? '#ff5151' : 'grey',
+      cpfColor: (cpf === '' || !regexNumber.test(cpf) || cpf.length < 11) ? '#ff5151' : 'grey',
+      cardColor: (card === '' || !regexNumber.test(card) || card.length < 16) ? '#ff5151' : 'grey',
+      cvvColor: (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) ? '#ff5151' : 'grey',
+      dateColor: date === '' ? '#ff5151' : 'grey',
+      periodicityColor: periodicity === '' ? '#ff5151' : 'grey',
+    });
 
     //validação final
     const isSomeRed = [
-      valueColor,
-      nameColor,
-      lastNameColor,
-      emailColor,
-      cardColor,
-      cvvColor,
-      cpfColor,
-      dateColor,
-      periodicityColor
+      this.state.valueColor,
+      this.state.nameColor,
+      this.state.lastNameColor,
+      this.state.emailColor,
+      this.state.cardColor,
+      this.state.cvvColor,
+      this.state.cpfColor,
+      this.state.dateColor,
+      this.state.periodicityColor
     ].every(color => color === 'grey');
 
-    console.log(isSomeRed);
-
-    //essa é a parte em que se ativa antes dos setStates acima funcionarem, isso ocorre porque setState é async acredito. 
-    //Pesquisei meios de se solucionar mas precisaria de mais tempo pra descobrir.
     if (isSomeRed) {
-      console.log('dentro'); this.errorMessage.message = 'none';
+      await this.setState({ message: 'none' });
       this.handleSubmit();
     } else {
-      console.log('fora'); this.errorMessage.message = 'block';
+      await this.setState({ message: 'block' });
     }
   }
 
@@ -169,7 +136,7 @@ class Form extends Component {
         onErrorValue={this.state.valueColor} onErrorOption={this.state.periodicityColor} />
 
       {/*Error message */}
-      <ErrorMessage style={{ display: this.errorMessage.message }}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
+      <ErrorMessage style={{ display: this.state.message }}> &#x26A0; Corrija os campos abaixo</ErrorMessage>
 
       {/*section 2 */}
       <br />
