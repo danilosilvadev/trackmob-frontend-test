@@ -15,7 +15,7 @@ const SelecioneValor = props => {
             </LabelPeriodicidade>
             <LabelValor>
                 <InputValor type="text" placeholder='R$ 30,00' maxLength="8"
-                onChange={v => props.onValue(v.target.value)} style={{border: `1px solid ${props.onErrorValue}`}}/><br />
+                onChange={v => {!isNaN(v.target.value) ? props.onValue(v.target.value) : v.target.value=''}} style={{border: `1px solid ${props.onErrorValue}`}}/><br />
                 <span>Valor mínimo de R$ 15,00</span>
             </LabelValor>
         </section>

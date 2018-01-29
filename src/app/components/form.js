@@ -71,7 +71,7 @@ class Form extends Component {
     const regexNumber = /^[0-9]*$/;
 
     //validações
-    if (value === '0' || Number(value) < 15 || value === '' || !regexNumber.test(value)) {
+    if (value === '0' || Number(value) < 15 || value === '') {
       this.setState({ valueColor: '#ff5151' });
     } else {
       this.setState({ valueColor: 'grey' });
@@ -109,10 +109,26 @@ class Form extends Component {
       this.setState({ periodicityColor: 'grey' });
     }
 
-    if ((valueColor && nameColor && lastNameColor && emailColor
-      && cardColor && cvvColor && cpfColor
-      && dateColor && periodicityColor) === 'grey') {
-      console.log('dentro'); this.errorMessage.message = 'none'; //this.handleSubmit();
+    //validação final
+    const isSomeRed = [
+      valueColor,
+      nameColor,
+      lastNameColor,
+      emailColor,
+      cardColor,
+      cvvColor,
+      cpfColor,
+      dateColor,
+      periodicityColor
+    ].every(color => color === 'grey');
+
+    console.log(isSomeRed);
+
+    //essa é a parte em que se ativa antes dos setStates acima funcionarem, isso ocorre porque setState é async acredito. 
+    //Pesquisei meios de se solucionar mas precisaria de mais tempo pra descobrir.
+    if (isSomeRed) {
+      console.log('dentro'); this.errorMessage.message = 'none';
+      this.handleSubmit();
     } else {
       console.log('fora'); this.errorMessage.message = 'block';
     }
