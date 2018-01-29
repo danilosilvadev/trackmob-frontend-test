@@ -16,7 +16,8 @@ class Form extends Component {
     lastName: '',
     email: '',
     card: '',
-    validity: '',
+    cvv: '',
+    date: '',
     cpf: '',
 
     //border colors para validação
@@ -26,7 +27,8 @@ class Form extends Component {
     emailColor: 'grey',
     cpfColor: 'grey',
     cardColor: 'grey',
-    validityColor: 'grey'
+    cvvColor: 'grey',
+    dateColor: 'grey'
   }
 
   handleClick(e) {
@@ -35,6 +37,10 @@ class Form extends Component {
     const { name } = this.state;
     const { lastName } = this.state;
     const { email } = this.state;
+    const { cpf } = this.state;
+    const { card } = this.state;
+    const { cvv } = this.state;
+    const { date } = this.state;
     const regexEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const regexNumber = /^[0-9]*$/;
     if (value === '0' || value < 15 || value === '' ) {
@@ -53,6 +59,22 @@ class Form extends Component {
       this.setState({ emailColor: 'red' });
     } else {
       this.setState({ emailColor: 'grey' });
+    } if (cpf === '' || !regexNumber.test(cpf) || cpf.length < 11) {
+      this.setState({ cpfColor: 'red' });
+    } else {
+      this.setState({ cpfColor: 'grey' });
+    } if (card === '' || !regexNumber.test(card) || card.length < 16) {
+      this.setState({ cardColor: 'red' });
+    } else {
+      this.setState({ cardColor: 'grey' });
+    }  if (cvv === '' || !regexNumber.test(cvv) || cvv.length < 3) {
+      this.setState({ cvvColor: 'red' });
+    } else {
+      this.setState({ cvvColor: 'grey' });
+    } if (date === '') {
+      this.setState({ dateColor: 'red' });
+    } else {
+      this.setState({ dateColor: 'grey' });
     }
 
   }
@@ -75,7 +97,11 @@ class Form extends Component {
 
       {/*section 3 */}
       <Div><Title>Dados de pagamento</Title><Span>&#128274; Dados seguros</Span></Div>
-      <DadosPagamento onCPF={v => this.setState({ cpf: v})} />
+      <DadosPagamento onCPF={v => this.setState({ cpf: v})} 
+      onErrorCPF={this.state.cpfColor} onCard={v => this.setState({ card: v})} 
+      onErrorCard={this.state.cardColor} onCVV={v => this.setState({ cvv: v})} 
+      onErrorCVV={this.state.cvvColor} onDate={v => this.setState({ date: v})} 
+      onErrorDate={this.state.dateColor}/>
       <br />
 
       {/*section 4 */}
