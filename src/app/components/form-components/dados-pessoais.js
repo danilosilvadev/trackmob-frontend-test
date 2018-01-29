@@ -3,21 +3,6 @@ import styled from 'styled-components';
 
 const DadosPessoais = props => {
 
-    const onChangeName = (e) => {
-        e.preventDefault();
-        props.onName(e.target.value);
-    }
-
-    const onChangeLastName = (e) => {
-        e.preventDefault();
-        props.onLastName(e.target.value);
-    }
-
-    const onChangeEmail = (e) => {
-        e.preventDefault();
-        props.onEmail(e.target.value);
-    }
-
     return <Dados className='border'>
         <Nome>
             <FieldTitle>
@@ -26,11 +11,11 @@ const DadosPessoais = props => {
             <NomeFields>
                 <LNome>
                     <InputNome type="text" placeholder='Primeiro Nome'
-                        onChange={onChangeName} style={{ border: `1px solid ${props.onErrorName}` }} />
+                        onChange={v => props.onName(v.target.value)} style={{ border: `1px solid ${props.onErrorName}` }} />
                 </LNome>
                 <LSobrenome>
                     <InputSobrenome type="text" placeholder='Sobrenome'
-                        onChange={onChangeLastName} style={{ border: `1px solid ${props.onErrorLastName}` }} />
+                        onChange={v => props.onLastName(v.target.value)} style={{ border: `1px solid ${props.onErrorLastName}` }} />
                 </LSobrenome>
             </NomeFields>
         </Nome>
@@ -39,7 +24,7 @@ const DadosPessoais = props => {
                 <span className='titulo_dado'>Email:<span className='asteristico'>*</span></span>
             </FieldTitle>
             <LEmail>
-                <InputEmail type="email" placeholder='Email' onChange={onChangeEmail}
+                <InputEmail type="email" placeholder='Email' onChange={v => props.onEmail(v.target.value)}
                     style={{ border: `1px solid ${props.onErrorEmail}` }} />
             </LEmail>
         </Email>

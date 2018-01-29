@@ -3,21 +3,9 @@ import styled from 'styled-components'
 
 const SelecioneValor = props => {
 
-    const handleChangeValue = (e) => {
-        e.preventDefault();
-        const value = e.target.value;
-        props.onValue(value);
-    }
-
-    const handleChangeOption = (e) => {
-        e.preventDefault();
-        const option = e.target.value;
-        props.onOption(option);
-    }
-
         return <section className='label_valor'>
             <LabelPeriodicidade>
-                <select onChange={handleChangeOption}>
+                <select onChange={ v => props.onOption(v.target.value)}>
                     <option value="">Selecione</option>
                     <option value="única">Única</option>
                     <option value="mensais">Mensal</option>
@@ -27,7 +15,7 @@ const SelecioneValor = props => {
             </LabelPeriodicidade>
             <LabelValor>
                 <InputValor type="number" placeholder='R$ 30,00' 
-                onChange={handleChangeValue} style={{border: `1px solid ${props.onError}`}}/><br />
+                onChange={v => props.onValue(v.target.value)} style={{border: `1px solid ${props.onError}`}}/><br />
                 <span>Valor mínimo de R$ 15,00</span>
             </LabelValor>
         </section>

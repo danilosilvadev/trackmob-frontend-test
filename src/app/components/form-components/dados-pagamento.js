@@ -6,16 +6,16 @@ const DadosPagamento = () => {
         <CPF>
             <span className='titulo_dado'>CPF:<span className='asteristico'>*</span></span>
             <LCPF>
-                <input type="text" placeholder='000.000.000-00' />
+                <input type="text" placeholder='000.000.000-00' name="cpf" maxLength="11" />
             </LCPF>
         </CPF>
         <Card>
             <TitleField className='titulo_dado'>Número de cartão:<span className='asteristico'>*</span></TitleField>
             <label>
-                <input type="text" placeholder='0000 0000 0000 0000' /><br />
+                <input type="text" placeholder='0000 0000 0000 0000' name="cartao" maxLength="16" /><br />
             </label>
             <label>
-                <InputCVV type="text" placeholder='cvv' /><br />
+                <InputCVV type="text" placeholder='cvv' name="cvv" maxLength="3" /><br />
             </label>
         </Card>
         <Validity>

@@ -7,12 +7,7 @@ import SelecioneValor from './form-components/selecione-valor'
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.handleValue = this.handleValue.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.handleOption = this.handleOption.bind(this);
-    this.handleName = this.handleName.bind(this);
-    this.handleLastName = this.handleLastName.bind(this);
-    this.handleEmail = this.handleEmail.bind(this);
   }
   state = {
     value: '0',
@@ -23,6 +18,7 @@ class Form extends Component {
     card: '',
     validity: '',
     cpf: '',
+
     //border colors para validação
     valueColor: 'grey',
     nameColor: 'grey',
@@ -39,9 +35,9 @@ class Form extends Component {
     const { name } = this.state;
     const { lastName } = this.state;
     const { email } = this.state;
-    const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (value === '0' || value < 15 || value === '') {
+    const regexEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regexNumber = /^[0-9]*$/;
+    if (value === '0' || value < 15 || value === '' ) {
       this.setState({ valueColor: 'red' });
     } else {
       this.setState({ valueColor: 'grey' });
@@ -53,58 +49,36 @@ class Form extends Component {
       this.setState({ lastNameColor: 'red' });
     } else {
       this.setState({ lastNameColor: 'grey' });
-    } if (email === '' || !regex.test(email)) {
+    } if (email === '' || !regexEmail.test(email)) {
       this.setState({ emailColor: 'red' });
     } else {
       this.setState({ emailColor: 'grey' });
     }
 
-
-
-  }
-
-  handleOption(p) {
-    this.setState({ periodicity: p });
-  }
-
-  handleValue(v) {
-    this.setState({ value: v });
-  }
-
-  handleName(n) {
-    this.setState({ name: n });
-  }
-
-  handleLastName(l) {
-    this.setState({ lastName: l });
-  }
-
-  handleEmail(e) {
-    this.setState({ email: e });
   }
 
   render() {
 
     return <form onSubmit={this.handleClick} className='formulario'>
 
-      {/*area 1 */}
+      {/*section 1 */}
       <Title>Selecione um valor</Title>
-      <SelecioneValor onValue={this.handleValue} onOption={this.handleOption} onError={this.state.valueColor} />
+      <SelecioneValor onValue={v => this.setState({ value: v })} onOption={v => this.setState({ periodicity: v })} onError={this.state.valueColor} />
 
-      {/*area 2 */}
+      {/*section 2 */}
       <br />
       <Title>Dados Pessoais</Title>
-      <DadosPessoais onName={this.handleName} onLastName={this.handleLastName} onEmail={this.handleEmail}
+      <DadosPessoais onName={v => this.setState({ name: v })} onLastName={v => this.setState({ lastName: v })} onEmail={v => this.setState({ email: v })}
         onErrorName={this.state.nameColor} onErrorLastName={this.state.lastNameColor}
         onErrorEmail={this.state.emailColor} />
       <br />
 
-      {/*area 3 */}
+      {/*section 3 */}
       <Div><Title>Dados de pagamento</Title><Span>&#128274; Dados seguros</Span></Div>
-      <DadosPagamento />
+      <DadosPagamento onCPF={v => this.setState({ cpf: v})} />
       <br />
 
-      {/*area 4 */}
+      {/*section 4 */}
       <Valor> R$ {this.state.value},00 {this.state.periodicity} </Valor>
       <input type="submit" value="Confirmar doação" /><br /><br />
       <Checkbox>
